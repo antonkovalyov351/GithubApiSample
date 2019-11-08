@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">GithubApiSample</string>
+    <string name="repo_search_hint">Search</string>
 </resources>
