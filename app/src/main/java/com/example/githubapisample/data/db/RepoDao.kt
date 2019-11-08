@@ -17,6 +17,12 @@ interface RepoDao {
     @Query("SELECT * FROM RepoEntity WHERE id in (:repoIds)")
     fun loadById(repoIds: List<Int>): Single<List<RepoEntity>>
 
+    @Query("SELECT * FROM RepoEntity WHERE id is (:repoId)")
+    fun loadById(repoId: Int): Single<RepoEntity>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(repo: RepoEntity)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertRepos(repositories: List<RepoEntity>)
 
