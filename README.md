@@ -1,7 +1,6 @@
 # GithubApiSample
-[WIP] MVVM, RxJava2, Retrofit2
+[WIP] MVVM, RxJava2, Retrofit2, ROOM
 
-    // TODO: ROOM
     // TODO: DATA BINDING
     // TODO: PAGING
     // TODO: TESTING
