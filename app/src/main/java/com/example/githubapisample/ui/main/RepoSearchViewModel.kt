@@ -3,7 +3,7 @@ package com.example.githubapisample.ui.main
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.githubapisample.data.repository.repo.RepoRepositoryImpl
+import com.example.githubapisample.data.usecase.SearchRepoUseCase
 import com.example.githubapisample.domain.vo.Repo
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -12,7 +12,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class RepoSearchViewModel @Inject constructor(
-    private val repoRepository: RepoRepositoryImpl
+    private val repoRepository: SearchRepoUseCase
 ) : ViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
@@ -26,11 +26,8 @@ class RepoSearchViewModel @Inject constructor(
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                    { it ->
-                        it.forEach { Timber.d("Repo: ${it.name}") }
-                        _repoList.postValue(it)
-                    },
-                    { it -> Timber.e(it) }
+                    { _repoList.postValue(it) },
+                    { Timber.e(it) }
                 )
         )
     }

@@ -51,7 +51,7 @@ versions.okhttp_logging_interceptor = "3.9.0"
 versions.paging = "2.1.0-rc01"
 versions.retrofit = "2.3.0"
 versions.robolectric = "4.2"
-versions.room = "2.1.0-alpha06"
+versions.room = "2.2.0"
 versions.rx_android = "2.0.1"
 versions.rxjava2 = "2.1.3"
 versions.support = "1.0.0"
@@ -140,15 +140,14 @@ kotlin.stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
 kotlin.test = "org.jetbrains.kotlin:kotlin-test-junit:$versions.kotlin"
 kotlin.plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
 kotlin.allopen = "org.jetbrains.kotlin:kotlin-allopen:$versions.kotlin"
-
 deps.kotlin = kotlin
-
-deps.paging_ktx = "androidx.paging:paging-runtime-ktx:$versions.paging"
 
 def glide = [:]
 glide.runtime = "com.github.bumptech.glide:glide:$versions.glide"
 glide.compiler = "com.github.bumptech.glide:compiler:$versions.glide"
 deps.glide = glide
+
+deps.paging_ktx = "androidx.paging:paging-runtime-ktx:$versions.paging"
 deps.dexmaker = "com.linkedin.dexmaker:dexmaker-mockito:$versions.dexmaker"
 deps.constraint_layout = "androidx.constraintlayout:constraintlayout:$versions.constraint_layout"
 deps.timber = "com.jakewharton.timber:timber:$versions.timber"
@@ -186,7 +185,7 @@ deps.navigation = navigation
 
 ext.deps = deps
 
-def addRepos(RepositoryHandler handler) {
+static def addRepos(RepositoryHandler handler) {
     handler.google()
     handler.jcenter()
     handler.maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }

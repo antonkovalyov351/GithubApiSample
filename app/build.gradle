@@ -37,12 +37,14 @@ dependencies {
     implementation deps.support.app_compat
     implementation deps.support.core_ktx
 
-    implementation deps.navigation.fragment_ktx
     implementation deps.room.runtime
+    implementation deps.room.rxjava2
+    kapt deps.room.compiler
 
     implementation deps.lifecycle.runtime
     implementation deps.lifecycle.java8
     implementation deps.lifecycle.viewmodel_ktx
+    kapt deps.lifecycle.compiler
 
     implementation deps.retrofit.runtime
     implementation deps.retrofit.gson
@@ -51,6 +53,10 @@ dependencies {
     implementation deps.dagger.runtime
     implementation deps.dagger.android
     implementation deps.dagger.android_support
+    kapt deps.dagger.android_support_compiler
+    kapt deps.dagger.compiler
+
+    implementation deps.navigation.fragment_ktx
 
     implementation deps.constraint_layout
     implementation deps.timber
@@ -58,12 +64,7 @@ dependencies {
     implementation deps.rxjava2
     implementation deps.rx_android
 
-    kapt deps.dagger.android_support_compiler
-    kapt deps.dagger.compiler
-    kapt deps.room.compiler
-    kapt deps.lifecycle.compiler
-
     testImplementation deps.junit
-    androidTestImplementation 'androidx.test.ext:junit:1.1.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }

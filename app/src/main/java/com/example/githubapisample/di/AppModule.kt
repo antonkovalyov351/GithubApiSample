@@ -1,5 +1,9 @@
 package com.example.githubapisample.di
 
+import android.app.Application
+import androidx.room.Room
+import com.example.githubapisample.data.db.GithubDb
+import com.example.githubapisample.data.db.RepoDao
 import com.example.githubapisample.data.net.GithubApiService
 import dagger.Module
 import dagger.Provides
@@ -20,25 +24,18 @@ class AppModule {
             .build()
             .create(GithubApiService::class.java)
     }
-//
-//    @Singleton
-//    @Provides
-//    fun provideDb(app: Application): GithubDb {
-//        return Room
-//            .databaseBuilder(app, GithubDb::class.java, "github.db")
-//            .fallbackToDestructiveMigration()
-//            .build()
-//    }
-//
-//    @Singleton
-//    @Provides
-//    fun provideUserDao(db: GithubDb): UserDao {
-//        return db.userDao()
-//    }
-//
-//    @Singleton
-//    @Provides
-//    fun provideRepoDao(db: GithubDb): RepoDao {
-//        return db.repoDao()
-//    }
+
+    @Singleton
+    @Provides
+    fun provideDb(app: Application): GithubDb {
+        return Room.databaseBuilder(app, GithubDb::class.java, "github.db")
+            .fallbackToDestructiveMigration()
+            .build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideRepoDao(db: GithubDb): RepoDao {
+        return db.repoDao()
+    }
 }
