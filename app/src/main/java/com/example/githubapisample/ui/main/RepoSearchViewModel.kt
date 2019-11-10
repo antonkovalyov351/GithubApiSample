@@ -5,9 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.githubapisample.data.usecase.SearchRepoUseCase
 import com.example.githubapisample.domain.vo.Repo
+import com.example.githubapisample.domain.vo.Resource
+import com.example.githubapisample.domain.vo.Status
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -17,19 +18,33 @@ class RepoSearchViewModel @Inject constructor(
 
     private val compositeDisposable = CompositeDisposable()
 
-    private val _repoList = MutableLiveData<List<Repo>>(listOf())
-    val repoList: LiveData<List<Repo>> = _repoList
+    private val _searchResult = MutableLiveData<List<Repo>>(listOf())
+    val searchResult: LiveData<List<Repo>> = _searchResult
+
+    private val _loading = MutableLiveData<Boolean>(false)
+    val loading: LiveData<Boolean> = _loading
 
     fun search(query: String) {
         compositeDisposable.add(
             searchRepoUseCase.searchRepositories(query)
-                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    { _repoList.postValue(it) },
-                    { Timber.e(it) }
-                )
+                .subscribe(this::handleSearchResult, Timber::e)
         )
+    }
+
+    private fun handleSearchResult(result: Resource<List<Repo>>) {
+        Timber.d("result = $result")
+        when (result.status) {
+            Status.LOADING -> _loading.postValue(true)
+            Status.SUCCESS -> {
+                _loading.postValue(false)
+                _searchResult.value = result.data
+            }
+            Status.ERROR -> {
+                _loading.postValue(false)
+                Timber.e(Exception(result.message))
+            }
+        }
     }
 
     override fun onCleared() {

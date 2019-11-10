@@ -11,6 +11,7 @@ import com.example.githubapisample.databinding.FragmentRepoSearchBinding
 import com.example.githubapisample.di.Injectable
 import com.example.githubapisample.ui.util.hideKeyboard
 import kotlinx.android.synthetic.main.fragment_repo_search.*
+import timber.log.Timber
 import javax.inject.Inject
 
 class RepoSearchFragment : Fragment(), Injectable {
@@ -36,7 +37,11 @@ class RepoSearchFragment : Fragment(), Injectable {
 
     private fun initRecyclerView() {
         val repoAdapter = RepoAdapter().also { binding.repoList.adapter = it }
-        viewModel.repoList.observe(this, repoAdapter::swapData)
+        viewModel.searchResult.observe(this, repoAdapter::swapData)
+        viewModel.loading.observe(this) {
+            Timber.d("loading = $it")
+            binding.loadingProgress.visibility = if (it) View.VISIBLE else View.GONE
+        }
     }
 
     private fun initSearchView() {

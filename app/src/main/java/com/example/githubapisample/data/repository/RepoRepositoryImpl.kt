@@ -5,6 +5,7 @@ import com.example.githubapisample.data.datasource.repo.RepoLocalDataSource
 import com.example.githubapisample.data.datasource.repo.RepoNetworkDataSource
 import com.example.githubapisample.domain.repository.RepoRepository
 import com.example.githubapisample.domain.vo.Repo
+import com.example.githubapisample.domain.vo.Resource
 import io.reactivex.Flowable
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
@@ -13,29 +14,31 @@ import javax.inject.Inject
 class RepoRepositoryImpl @Inject constructor(
     private val localDataSource: RepoLocalDataSource,
     private val networkDataSource: RepoNetworkDataSource
-): RepoRepository {
+) : RepoRepository {
 
-    override fun searchRepositories(query: String): Flowable<List<Repo>> {
+    override fun searchRepositories(query: String): Flowable<Resource<List<Repo>>> {
         return Flowable.concatArray(
+            sendLoading(),
             searchReposLocal(query),
             searchReposNetwork(query)
         ).subscribeOn(Schedulers.io())
     }
 
-    private fun searchReposLocal(query: String): Flowable<List<Repo>> {
+    private fun sendLoading() = Flowable.just(Resource.loading(emptyList<Repo>()))
+
+    private fun searchReposLocal(query: String): Flowable<Resource<List<Repo>>> {
         return localDataSource.searchRepositories(query).toFlowable()
-            .onErrorResumeNext(searchReposNetwork(query))
-            .doOnNext {
-                Timber.d("Dispatching ${it.size} repos from DB...")
-            }
+            .map { Resource.success(it) }
+            .onErrorResumeNext(sendLoading())
+            .doOnNext { Timber.d("Dispatching ${it.data?.size} repos from DB...") }
     }
 
-    private fun searchReposNetwork(query: String): Flowable<List<Repo>> {
+    private fun searchReposNetwork(query: String): Flowable<Resource<List<Repo>>> {
         return networkDataSource.searchRepositories(query).toFlowable()
             .doOnNext { repos ->
                 Timber.d("Dispatching ${repos.size} repos from API...")
                 storeSearch(query, repos)
-            }
+            }.map { Resource.success(it) }
     }
 
     @SuppressLint("CheckResult")
