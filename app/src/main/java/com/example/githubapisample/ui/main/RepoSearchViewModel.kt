@@ -12,7 +12,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class RepoSearchViewModel @Inject constructor(
-    private val repoRepository: SearchRepoUseCase
+    private val searchRepoUseCase: SearchRepoUseCase
 ) : ViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
@@ -22,7 +22,7 @@ class RepoSearchViewModel @Inject constructor(
 
     fun search(query: String) {
         compositeDisposable.add(
-            repoRepository.searchRepositories(query)
+            searchRepoUseCase.searchRepositories(query)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

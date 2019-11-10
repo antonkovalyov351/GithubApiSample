@@ -1,22 +1,21 @@
-package com.example.githubapisample.data.repository.repo
+package com.example.githubapisample.data.datasource.repo
 
 import android.util.SparseIntArray
 import com.example.githubapisample.data.db.GithubDb
 import com.example.githubapisample.data.db.entity.RepoSearchResultEntity
 import com.example.githubapisample.data.mapper.RepoModelMapper
-import com.example.githubapisample.domain.repository.RepoRepository
 import com.example.githubapisample.domain.vo.Repo
 import io.reactivex.Single
 import java.util.*
 import javax.inject.Inject
 
-class RepoLocalRepository @Inject constructor(
+class RepoLocalDataSource @Inject constructor(
     private val db: GithubDb
-) : RepoRepository {
+) {
 
     private val repoDao = db.repoDao()
 
-    override fun searchRepository(query: String): Single<List<Repo>> =
+    fun searchRepositories(query: String): Single<List<Repo>> =
         repoDao.search(query).flatMap { result ->
             val order = SparseIntArray()
             result.repoIds.withIndex().forEach {

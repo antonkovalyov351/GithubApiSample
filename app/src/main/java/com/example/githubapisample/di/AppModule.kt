@@ -2,9 +2,13 @@ package com.example.githubapisample.di
 
 import android.app.Application
 import androidx.room.Room
+import com.example.githubapisample.data.datasource.repo.RepoLocalDataSource
+import com.example.githubapisample.data.datasource.repo.RepoNetworkDataSource
 import com.example.githubapisample.data.db.GithubDb
 import com.example.githubapisample.data.db.RepoDao
 import com.example.githubapisample.data.net.GithubApiService
+import com.example.githubapisample.data.repository.RepoRepositoryImpl
+import com.example.githubapisample.domain.repository.RepoRepository
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -37,5 +41,14 @@ class AppModule {
     @Provides
     fun provideRepoDao(db: GithubDb): RepoDao {
         return db.repoDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideRepoRepository(
+        repoLocalDataSource: RepoLocalDataSource,
+        repoNetworkDataSource: RepoNetworkDataSource
+    ): RepoRepository {
+        return RepoRepositoryImpl(repoLocalDataSource, repoNetworkDataSource)
     }
 }

@@ -1,9 +1,9 @@
 package com.example.githubapisample.domain.repository
 
 import com.example.githubapisample.domain.vo.Repo
-import io.reactivex.Single
+import io.reactivex.Flowable
 
 interface RepoRepository {
 
-    fun searchRepository(query: String): Single<List<Repo>>
+    fun searchRepositories(query: String): Flowable<List<Repo>>
 }
