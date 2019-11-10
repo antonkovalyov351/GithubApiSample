@@ -69,6 +69,7 @@ dependencies {
     implementation deps.rx_android
 
     testImplementation deps.junit
+    testImplementation deps.mock_web_server
 
     androidTestImplementation deps.atsl.core
     androidTestImplementation deps.atsl.runner
@@ -76,6 +77,5 @@ dependencies {
     androidTestImplementation deps.atsl.ext_junit
 
     androidTestImplementation deps.espresso.core
-
     androidTestImplementation deps.arch_core.testing
 }
