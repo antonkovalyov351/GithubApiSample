@@ -11,5 +11,7 @@ data class RepoEntity(
     @ColumnInfo(name = "id")
     val id: Int,
 
-    val name: String
+    val name: String,
+
+    val fullName: String
 )

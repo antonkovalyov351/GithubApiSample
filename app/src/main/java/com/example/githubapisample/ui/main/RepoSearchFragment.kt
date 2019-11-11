@@ -8,6 +8,7 @@ import android.view.inputmethod.EditorInfo
 import androidx.databinding.library.baseAdapters.BR
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.githubapisample.databinding.FragmentRepoSearchBinding
 import com.example.githubapisample.di.Injectable
 import com.example.githubapisample.ui.util.hideKeyboard
@@ -42,6 +43,9 @@ class RepoSearchFragment : Fragment(), Injectable {
     }
 
     private fun initRecyclerView() {
+        binding.repoList.addItemDecoration(
+            DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
+        )
         val repoAdapter = RepoAdapter().also { binding.repoList.adapter = it }
         viewModel.searchResult.observe(this, repoAdapter::swapData)
     }
