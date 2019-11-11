@@ -20,25 +20,40 @@ class RepoRepositoryImpl @Inject constructor(
         return Flowable.concatArray(
             sendLoading(),
             searchReposLocal(query),
-            searchReposNetwork(query)
+            searchReposNetwork(query, DEFAULT_PAGE, DEFAULT_PAGE_SIZE)
+        ).subscribeOn(Schedulers.io())
+    }
+
+    override fun searchRepositories(query: String, page: Int): Flowable<Resource<List<Repo>>> {
+        return Flowable.concatArray(
+            sendLoading(),
+            searchReposLocal(query),
+            searchReposNetwork(query, page, DEFAULT_PAGE_SIZE)
         ).subscribeOn(Schedulers.io())
     }
 
     private fun sendLoading() = Flowable.just(Resource.loading(emptyList<Repo>()))
 
     private fun searchReposLocal(query: String): Flowable<Resource<List<Repo>>> {
-        return localDataSource.searchRepositories(query).toFlowable()
+        return localDataSource.searchRepositories(query)
+            .toFlowable()
             .map { Resource.success(it) }
             .onErrorResumeNext(sendLoading())
             .doOnNext { Timber.d("Dispatching ${it.data?.size} repos from DB...") }
     }
 
-    private fun searchReposNetwork(query: String): Flowable<Resource<List<Repo>>> {
-        return networkDataSource.searchRepositories(query).toFlowable()
+    private fun searchReposNetwork(
+        query: String,
+        page: Int,
+        pageSize: Int
+    ): Flowable<Resource<List<Repo>>> {
+        return networkDataSource.searchRepositories(query, page, pageSize)
+            .toFlowable()
             .doOnNext { repos ->
                 Timber.d("Dispatching ${repos.size} repos from API...")
                 storeSearch(query, repos)
             }.map { Resource.success(it) }
+            .onErrorReturn { Resource.error(it.message!!, emptyList()) }
     }
 
     @SuppressLint("CheckResult")
@@ -49,5 +64,10 @@ class RepoRepositoryImpl @Inject constructor(
             .subscribe {
                 Timber.d("Inserted ${repos.size} users from API in DB...")
             }
+    }
+
+    companion object {
+        private const val DEFAULT_PAGE = 1
+        private const val DEFAULT_PAGE_SIZE = 30
     }
 }

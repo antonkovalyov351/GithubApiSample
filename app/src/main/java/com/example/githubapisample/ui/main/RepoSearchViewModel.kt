@@ -9,6 +9,7 @@ import com.example.githubapisample.domain.vo.Resource
 import com.example.githubapisample.domain.vo.Status
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -25,11 +26,14 @@ class RepoSearchViewModel @Inject constructor(
     val loading: LiveData<Boolean> = _loading
 
     fun search(query: String) {
-        compositeDisposable.add(
-            searchRepoUseCase.searchRepositories(query)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::handleSearchResult, Timber::e)
-        )
+        searchRepoUseCase.searchRepositories(query)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(this::handleSearchResult, Timber::e)
+            .addTo(compositeDisposable)
+    }
+
+    fun loadMore() {
+
     }
 
     private fun handleSearchResult(result: Resource<List<Repo>>) {

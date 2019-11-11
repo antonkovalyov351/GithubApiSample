@@ -7,4 +7,6 @@ import io.reactivex.Flowable
 interface RepoRepository {
 
     fun searchRepositories(query: String): Flowable<Resource<List<Repo>>>
+
+    fun searchRepositories(query: String, page: Int): Flowable<Resource<List<Repo>>>
 }

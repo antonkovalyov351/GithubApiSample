@@ -9,6 +9,8 @@ import androidx.databinding.library.baseAdapters.BR
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.githubapisample.databinding.FragmentRepoSearchBinding
 import com.example.githubapisample.di.Injectable
 import com.example.githubapisample.ui.util.hideKeyboard
@@ -47,7 +49,16 @@ class RepoSearchFragment : Fragment(), Injectable {
             DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
         )
         val repoAdapter = RepoAdapter().also { binding.repoList.adapter = it }
-        viewModel.searchResult.observe(this, repoAdapter::swapData)
+        binding.repoList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val lastPosition = layoutManager.findLastVisibleItemPosition()
+                if (lastPosition == repoAdapter.itemCount - 1) {
+                    viewModel.loadMore()
+                }
+            }
+        })
+        viewModel.searchResult.observe(viewLifecycleOwner, repoAdapter::swapData)
     }
 
     private fun initSearchView() {

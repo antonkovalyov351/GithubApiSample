@@ -61,12 +61,14 @@ dependencies {
     kapt deps.dagger.compiler
 
     implementation deps.navigation.fragment_ktx
+    implementation deps.paging_ktx
 
     implementation deps.constraint_layout
     implementation deps.timber
 
     implementation deps.rxjava2
     implementation deps.rx_android
+    implementation deps.rxkotlin
 
     testImplementation deps.junit
     testImplementation deps.mock_web_server

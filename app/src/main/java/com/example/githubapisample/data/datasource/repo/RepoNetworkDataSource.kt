@@ -10,7 +10,7 @@ class RepoNetworkDataSource @Inject constructor(
     private val githubApiService: GithubApiService
 ) {
 
-    fun searchRepositories(query: String): Single<List<Repo>> =
-        githubApiService.searchRepos(query)
+    fun searchRepositories(query: String, page: Int, pageSize: Int): Single<List<Repo>> =
+        githubApiService.searchRepos(query, page, pageSize)
             .map(RepoModelMapper::searchRepoResponseToRepoList)
 }

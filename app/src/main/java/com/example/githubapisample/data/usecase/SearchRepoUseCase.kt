@@ -12,4 +12,7 @@ class SearchRepoUseCase @Inject constructor(
 
     fun searchRepositories(query: String): Flowable<Resource<List<Repo>>> =
         repoRepository.searchRepositories(query)
+
+    fun searchRepositories(query: String, page: Int): Flowable<Resource<List<Repo>>> =
+        repoRepository.searchRepositories(query, page)
 }

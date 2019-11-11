@@ -48,12 +48,13 @@ versions.mockito_android = "2.25.0"
 versions.mockwebserver = "3.8.1"
 versions.navigation = "2.2.0-alpha01"
 versions.okhttp_logging_interceptor = "3.9.0"
-versions.paging = "2.1.0-rc01"
+versions.paging = "2.1.0"
 versions.retrofit = "2.3.0"
 versions.robolectric = "4.2"
 versions.room = "2.2.0"
 versions.rx_android = "2.0.1"
 versions.rxjava2 = "2.2.9"
+versions.rxkotlin = "2.4.0"
 versions.support = "1.0.0"
 versions.timber = "4.5.1"
 versions.work = "2.1.0"
@@ -155,6 +156,7 @@ deps.junit = "junit:junit:$versions.junit"
 deps.mock_web_server = "com.squareup.okhttp3:mockwebserver:$versions.mockwebserver"
 deps.rxjava2 = "io.reactivex.rxjava2:rxjava:$versions.rxjava2"
 deps.rx_android = "io.reactivex.rxjava2:rxandroid:$versions.rx_android"
+deps.rxkotlin = "io.reactivex.rxjava2:rxkotlin:$versions.rxkotlin"
 deps.hamcrest = "org.hamcrest:hamcrest-all:$versions.hamcrest"
 deps.android_gradle_plugin = "com.android.tools.build:gradle:$versions.android_gradle_plugin"
 deps.robolectric = "org.robolectric:robolectric:$versions.robolectric"
@@ -190,4 +192,5 @@ static def addRepos(RepositoryHandler handler) {
     handler.jcenter()
     handler.maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
 }
+
 ext.addRepos = this.&addRepos
