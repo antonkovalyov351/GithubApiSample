@@ -11,8 +11,13 @@ buildscript {
     }
 }
 
+plugins {
+    id "io.gitlab.arturbosch.detekt" version "1.5.0"
+}
+
 allprojects {
     addRepos(repositories)
+    apply from: "$rootDir/detekt.gradle"
 }
 
 task clean(type: Delete) {
