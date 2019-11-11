@@ -5,13 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import androidx.databinding.library.baseAdapters.BR
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import com.example.githubapisample.databinding.FragmentRepoSearchBinding
 import com.example.githubapisample.di.Injectable
 import com.example.githubapisample.ui.util.hideKeyboard
 import kotlinx.android.synthetic.main.fragment_repo_search.*
-import timber.log.Timber
 import javax.inject.Inject
 
 class RepoSearchFragment : Fragment(), Injectable {
@@ -31,17 +31,19 @@ class RepoSearchFragment : Fragment(), Injectable {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initBinding()
         initRecyclerView()
         initSearchView()
+    }
+
+    private fun initBinding() {
+        binding.lifecycleOwner = this
+        binding.setVariable(BR.viewModel, viewModel)
     }
 
     private fun initRecyclerView() {
         val repoAdapter = RepoAdapter().also { binding.repoList.adapter = it }
         viewModel.searchResult.observe(this, repoAdapter::swapData)
-        viewModel.loading.observe(this) {
-            Timber.d("loading = $it")
-            binding.loadingProgress.visibility = if (it) View.VISIBLE else View.GONE
-        }
     }
 
     private fun initSearchView() {

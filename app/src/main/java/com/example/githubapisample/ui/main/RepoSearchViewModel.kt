@@ -35,13 +35,13 @@ class RepoSearchViewModel @Inject constructor(
     private fun handleSearchResult(result: Resource<List<Repo>>) {
         Timber.d("result = $result")
         when (result.status) {
-            Status.LOADING -> _loading.postValue(true)
+            Status.LOADING -> _loading.value = true
             Status.SUCCESS -> {
-                _loading.postValue(false)
+                _loading.value = false
                 _searchResult.value = result.data
             }
             Status.ERROR -> {
-                _loading.postValue(false)
+                _loading.value = false
                 Timber.e(Exception(result.message))
             }
         }
