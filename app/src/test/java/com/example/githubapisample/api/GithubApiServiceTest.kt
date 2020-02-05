@@ -43,11 +43,11 @@ class GithubApiServiceTest {
     fun search() {
         enqueueResponse("search.json")
 
-        val response = service.searchRepos("jetpack").blockingGet()
+        val response = service.searchRepos("jetpack", 1, 30).blockingGet()
 
         assertThat(response, notNullValue())
         assertThat(response.total, `is`(3367))
-        assertThat(response.items.size, `is`(30))
+        assertThat(response.items.size, `is`(31))
     }
 
     private fun enqueueResponse(fileName: String, headers: Map<String, String> = emptyMap()) {

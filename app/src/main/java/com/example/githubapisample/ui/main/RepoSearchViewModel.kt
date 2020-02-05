@@ -33,7 +33,7 @@ class RepoSearchViewModel @Inject constructor(
     }
 
     fun loadMore() {
-
+        _loading.value = true
     }
 
     private fun handleSearchResult(result: Resource<List<Repo>>) {
