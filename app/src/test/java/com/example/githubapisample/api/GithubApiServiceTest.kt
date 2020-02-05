@@ -47,7 +47,7 @@ class GithubApiServiceTest {
 
         assertThat(response, notNullValue())
         assertThat(response.total, `is`(3367))
-        assertThat(response.items.size, `is`(31))
+        assertThat(response.items.size, `is`(30))
     }
 
     private fun enqueueResponse(fileName: String, headers: Map<String, String> = emptyMap()) {
